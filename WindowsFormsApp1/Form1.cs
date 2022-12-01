@@ -18,6 +18,7 @@ namespace WindowsFormsApp1
             InitializeComponent();
             textBox1.Text = "for i := 10 to 100 do y := i + x ;";
             textBox3.Text = "Исходный код: " + textBox1.Text;
+            button6.Enabled = false;
         }
 
         bool exeption = false;//Указатель ошибки в разбираемом коде
@@ -161,12 +162,14 @@ namespace WindowsFormsApp1
                     textBox2.Text += $"{p.Key} \t- {p.Value}\r\n";
                 }
                 MessageBox.Show($"Операция выполнена", "Уведомление");
+                textBox3.Text = "Исходный код: " + textBox1.Text;
+                button6.Enabled = true;
             }
             else
             {
                 MessageBox.Show($"Ошибка при выполнении кода", "Уведомление");
-            }
-            textBox3.Text = "Исходный код: " + textBox1.Text;
+                button6.Enabled = false;
+            }      
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -189,6 +192,7 @@ namespace WindowsFormsApp1
 
         private void button6_Click(object sender, EventArgs e)
         {
+            button6.Enabled = false;
             textBox4.Text = "";
             textBox5.Text = "";
             textBox6.Text = "";
@@ -228,7 +232,7 @@ namespace WindowsFormsApp1
             {
                 textBox6.Text += $"{v.Value} \t {v.Key}\r\n";
             }
-
+            //Проверка новой ветви
         }
     }
 }

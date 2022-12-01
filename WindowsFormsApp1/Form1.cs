@@ -32,6 +32,8 @@ namespace WindowsFormsApp1
         Dictionary<string, string> literalsD = new Dictionary<string, string>();//Литералы
         Dictionary<string, string> tableD = new Dictionary<string, string>();//Стандартные символы
 
+        Dictionary<string, string> newadsf = new Dictionary<string, string>();//Стандартные символы
+
         private void button1_Click(object sender, EventArgs e)
         {
             string text = "";

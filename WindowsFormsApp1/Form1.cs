@@ -190,8 +190,9 @@ namespace WindowsFormsApp1
         private void button6_Click(object sender, EventArgs e)
         {
             textBox4.Text = "";
+            textBox5.Text = "";
 
-            textBox4.Text = "Служебные слова\r\n";
+            textBox4.Text = "Служебные слова:\r\n";
             for(int i = 0; i< terminals.Length; i++)
             {
                 terminalsD.Add(terminals[i], (i + 1).ToString());
@@ -200,6 +201,17 @@ namespace WindowsFormsApp1
             foreach(var t in terminalsD)
             {
                 textBox4.Text += $"{t.Value} \t {t.Key}\r\n";
+            }
+
+            textBox5.Text = "Разделители:\r\n";
+            for(int i = 0; i < separators.Length; i++)
+            {
+                separatorsD.Add(separators[i], (i + 1).ToString());
+            }
+
+            foreach(var s in separatorsD)
+            {
+                textBox5.Text += $"{s.Value} \t {s.Key}\r\n";
             }
 
         }

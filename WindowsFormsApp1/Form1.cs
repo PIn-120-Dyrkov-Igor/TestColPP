@@ -17,6 +17,7 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             textBox1.Text = "for i := 10 to 100 do y := i + x ;";
+            textBox3.Text = "Исходный код: " + textBox1.Text;
         }
 
         bool exeption = false;//Указатель ошибки в разбираемом коде
@@ -31,8 +32,6 @@ namespace WindowsFormsApp1
         Dictionary<string, string> variablesD = new Dictionary<string, string>();//Переменные
         Dictionary<string, string> literalsD = new Dictionary<string, string>();//Литералы
         Dictionary<string, string> tableD = new Dictionary<string, string>();//Стандартные символы
-
-        Dictionary<string, string> newadsf = new Dictionary<string, string>();//Стандартные символы
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -167,22 +166,42 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show($"Ошибка при выполнении кода", "Уведомление");
             }
-            
+            textBox3.Text = "Исходный код: " + textBox1.Text;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             textBox1.Text = "if true\r\n\tthen a = 1;\r\nend; ";
+            textBox3.Text = "Исходный код: " + textBox1.Text;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             textBox1.Text = "if true then\r\n\ta = 1;\r\nelse\r\n\ta = 2;\r\nend; ";
+            textBox3.Text = "Исходный код: " + textBox1.Text;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             textBox1.Text = "if true then\r\n\ta = 1;\r\nelse if true then\r\n\ta = 2;\r\nelse\r\n\ta = 3;\r\nend; ";
+            textBox3.Text = "Исходный код: " + textBox1.Text;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            textBox4.Text = "";
+
+            textBox4.Text = "Служебные слова\r\n";
+            for(int i = 0; i< terminals.Length; i++)
+            {
+                terminalsD.Add(terminals[i], (i + 1).ToString());
+            }
+
+            foreach(var t in terminalsD)
+            {
+                textBox4.Text += $"{t.Value} \t {t.Key}\r\n";
+            }
+
         }
     }
 }

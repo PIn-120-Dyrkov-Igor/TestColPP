@@ -191,6 +191,7 @@ namespace WindowsFormsApp1
         {
             textBox4.Text = "";
             textBox5.Text = "";
+            textBox6.Text = "";
 
             textBox4.Text = "Служебные слова:\r\n";
             for(int i = 0; i< terminals.Length; i++)
@@ -212,6 +213,20 @@ namespace WindowsFormsApp1
             foreach(var s in separatorsD)
             {
                 textBox5.Text += $"{s.Value} \t {s.Key}\r\n";
+            }
+
+            textBox6.Text = "Переменные:\r\n";
+            foreach(var p in pairs)
+            {
+                if (!variablesD.ContainsKey(p.Key) && !terminalsD.ContainsKey(p.Key) && !separatorsD.ContainsKey(p.Key) && Char.IsLetter(p.Key[0]))
+                {
+                    variablesD.Add(p.Key, (variablesD.Count + 1).ToString());
+                }
+            }
+
+            foreach(var v in variablesD)
+            {
+                textBox6.Text += $"{v.Value} \t {v.Key}\r\n";
             }
 
         }

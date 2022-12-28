@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
@@ -16,7 +11,8 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
-            textBox1.Text = "for i := 10 to 100 do y := i + x ;";
+            //textBox1.Text = "for i := 10 to 100 do y := i + x ;";
+            textBox1.Text = "if (a==b) && (b!=c) then \r\n\tc=a; \r\nelse \r\n\tc=a//b; \r\nend;";
             textBox3.Text = "Исходный код: " + textBox1.Text;
             button6.Enabled = false;
         }
@@ -25,14 +21,16 @@ namespace WindowsFormsApp1
 
         List<KeyValuePair<string, string>> pairs = new List<KeyValuePair<string, string>>();//Пары символов
 
-        string[] terminals = { "var", "int", "boolean", "begin", "end", "for", "to", "do" };//Таблица служебных слов
-        string[] separators = { ";", ",", "=", ":", ":=", "+", "*" };//Таблица разделителей
+        //string[] terminals = { "var", "int", "boolean", "begin", "end", "for", "to", "do" };//Таблица служебных слов
+        string[] terminals = { "if", "then", "end", "else", "elsif" };//Таблица служебных слов
+        //string[] separators = { ";", ",", "=", ":", ":=", "+", "*" };//Таблица разделителей
+        string[] separators = { ";", "+", "-", "//", "*", "=", ">", "<", "==", ">=", "<=", "!=", "&&", "||", "(", ")" };//Таблица разделителей
 
-        Dictionary<string, string> terminalsD = new Dictionary<string, string>();//Служебные слова
-        Dictionary<string, string> separatorsD = new Dictionary<string, string>();//Разделители
-        Dictionary<string, string> variablesD = new Dictionary<string, string>();//Переменные
-        Dictionary<string, string> literalsD = new Dictionary<string, string>();//Литералы
-        Dictionary<string, string> tableD = new Dictionary<string, string>();//Стандартные символы
+        public static Dictionary<string, string> terminalsD = new Dictionary<string, string>();//Служебные слова
+                      Dictionary<string, string> separatorsD = new Dictionary<string, string>();//Разделители
+        public static Dictionary<string, string> variablesD = new Dictionary<string, string>();//Переменные
+        public static Dictionary<string, string> literalsD = new Dictionary<string, string>();//Литералы
+                      Dictionary<string, string> tableD = new Dictionary<string, string>();//Стандартные символы
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -78,7 +76,7 @@ namespace WindowsFormsApp1
             string raz = "разделитель";
             string lit = "литерал";
 
-            string divide = ":=+;";
+            string divide = ":=+;()/*<>&!";
 
             for (int i = 0; i <= input.Length - 1;)
             {
@@ -157,10 +155,13 @@ namespace WindowsFormsApp1
 
             if(exeption == false)
             {
+                textBox10.Text = "";
                 foreach (var p in pairs)
                 {
                     textBox2.Text += $"{p.Key} \t- {p.Value}\r\n";
+                    textBox10.Text += $"{p.Key} \t- {p.Value}\r\n";//Вывод в 3 вкладку
                 }
+                textBox9.Text = textBox1.Text;
                 MessageBox.Show($"Операция выполнена", "Уведомление");
                 textBox3.Text = "Исходный код: " + textBox1.Text;
                 button6.Enabled = true;
@@ -174,19 +175,19 @@ namespace WindowsFormsApp1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "if true\r\n\tthen a = 1;\r\nend; ";
+            textBox1.Text = "if (a==b)\r\n\tthen a = 1;\r\nend; ";
             textBox3.Text = "Исходный код: " + textBox1.Text;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "if true then\r\n\ta = 1;\r\nelse\r\n\ta = 2;\r\nend; ";
+            textBox1.Text = "if (a==b) then\r\n\ta = 1;\r\nelse\r\n\ta = 2;\r\nend; ";
             textBox3.Text = "Исходный код: " + textBox1.Text;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "if true then\r\n\ta = 1;\r\nelse if true then\r\n\ta = 2;\r\nelse\r\n\ta = 3;\r\nend; ";
+            textBox1.Text = "if (a==b) then\r\n\ta = 1;\r\nelse if (a==b) then\r\n\ta = 2;\r\nelse\r\n\ta = 3;\r\nend; ";
             textBox3.Text = "Исходный код: " + textBox1.Text;
         }
 
@@ -196,7 +197,10 @@ namespace WindowsFormsApp1
             textBox4.Text = "";
             textBox5.Text = "";
             textBox6.Text = "";
+            textBox7.Text = "";
+            textBox8.Text = "";
 
+            terminalsD.Clear();
             textBox4.Text = "Служебные слова:\r\n";
             for(int i = 0; i< terminals.Length; i++)
             {
@@ -208,6 +212,7 @@ namespace WindowsFormsApp1
                 textBox4.Text += $"{t.Value} \t {t.Key}\r\n";
             }
 
+            separatorsD.Clear();
             textBox5.Text = "Разделители:\r\n";
             for(int i = 0; i < separators.Length; i++)
             {
@@ -219,6 +224,7 @@ namespace WindowsFormsApp1
                 textBox5.Text += $"{s.Value} \t {s.Key}\r\n";
             }
 
+            variablesD.Clear();
             textBox6.Text = "Переменные:\r\n";
             foreach(var p in pairs)
             {
@@ -233,6 +239,57 @@ namespace WindowsFormsApp1
                 textBox6.Text += $"{v.Value} \t {v.Key}\r\n";
             }
             //Проверка новой ветви
+
+            literalsD.Clear();
+            textBox7.Text += $"Литералы:\r\n";
+            foreach (var p in pairs)
+            {
+                if (!literalsD.ContainsKey(p.Key) && !terminalsD.ContainsKey(p.Key) && !separatorsD.ContainsKey(p.Key) && Char.IsDigit(p.Key[0]))
+                {
+                    literalsD.Add(p.Key, (literalsD.Count + 1).ToString());
+                }
+            }
+
+            foreach (var l in literalsD)
+            {
+                textBox7.Text += $"{l.Value} \t- {l.Key}\r\n";
+            }
+
+            tableD.Clear();
+            textBox8.Text += $"Стандартные символы:\r\n";
+            foreach (var p in pairs)
+            {
+                if (terminalsD.ContainsKey(p.Key) && !tableD.ContainsKey(p.Key))
+                {
+                    tableD.Add(p.Key, ($"1,{terminalsD[p.Key]}").ToString());
+                }
+                else if (separatorsD.ContainsKey(p.Key) && !tableD.ContainsKey(p.Key))
+                {
+                    tableD.Add(p.Key, ($"2,{separatorsD[p.Key]}").ToString());
+                }
+                else if (variablesD.ContainsKey(p.Key) && !tableD.ContainsKey(p.Key))
+                {
+                    tableD.Add(p.Key, ($"3,{variablesD[p.Key]}").ToString());
+                }
+                else if (literalsD.ContainsKey(p.Key) && !tableD.ContainsKey(p.Key))
+                {
+                    tableD.Add(p.Key, ($"4,{literalsD[p.Key]}").ToString());
+                }
+            }
+
+            foreach (var t in tableD)
+            {
+                textBox8.Text += $"{t.Key} \t-{t.Value}\r\n";
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            //Обнуляем выходное поле
+            textBox11.Text = "";
+
+            //Заносим список всех элементов в класс и выводим сообщение
+            MessageBox.Show($"{CheckLexem.addElements(pairs)}");            
         }
     }
 }
